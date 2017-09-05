@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Test Web</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <script src="https://raw.githubusercontent.com/github/fetch/master/fetch.js"></script>
+
+  <script>
+    function printCookies() {
+      console.log(document.cookie);
+      alert(document.cookie);
+    };
+
+    function fetchUserFromNative() {
+      // Android
+      try {
+        var user = window.appInfoDispose.getUser();
+        alert(user);
+        return;
+      } catch (e) {
+        console.log('Call Android Exception : ' + e.toString());
+      }
+      // iOS8+
+      try {
+        // 在receiveIOSCallback中获取调用结果
+        window.webkit.messageHandlers.getUser.postMessage(null);
+        return;
+      } catch (e) {
+        console.log('Call iOS Exception : ' + e.toString());
+      }
+    };
+
+    function receiveIOSCallback(msgHandler, response) {
+      if (msgHandler == 'getUser') {
+        console.log(response);
+        alert('user.name = ' + response.name);
+      }
+    };
+
+    function fetchStoreInfoAPI() {
+      var apiUrl = 'http://store.51dinghuo.cc/api/store/info';
+
+      fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'laimi-client-version': 'ios.store.client:2.20.0',
+        }
+      }).then(function(response) {
+        console.log(response.text());
+        alert(response.text());
+      }, function(error) {
+        console.log(error.message);
+        alert(error.message);
+      });
+    };
+
+  </script>
+
+</head>
+<body>
+<ul>
+  <li><a href="https://m.jd.com/">京东H5</a></li>
+  <li><a href="tel:18475555555">拨打电话</a></li>
+  <li><a href="fmcgshop://goods/1600488">商品详情 (goodsId=1600488)</a></li>
+  <li><a href="fmcgshop://activity/11143">活动商品列表 (activityId=11143)</a></li>
+  <li><button onclick="fetchUserFromNative()">call getUser</button></li>
+  <li><button onclick="printCookies()">print cookies</button></li>
+  <li><button onclick="fetchStoreInfoAPI()">fetchStoreInfoAPI</button></li>
+</ul>
+</body>
+</html>
