@@ -39,22 +39,59 @@
       }
     };
 
-    function fetchStoreInfoAPI() {
-      var apiUrl = 'http://store.51dinghuo.cc/api/store/info';
-
-      fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'laimi-client-version': 'ios.store.client:2.20.0',
+    function _serverRequestError(statusCode) {
+        var errorStr = '';
+        if (statusCode === 400) {
+            errorStr = '服务器无法解析请求';
+        } else if (statusCode === 401) {
+            errorStr = '请先登录授权';
+        } else if (statusCode === 403) {
+            errorStr = '服务器拒绝请求';
+        } else if (statusCode === 404) {
+            errorStr = '服务器未找到请求页';
+        } else if (statusCode === 500) {
+            errorStr = '服务器遇到错误，无法完成请求';
+        } else if (statusCode === 501) {
+            errorStr = '服务器不支持所请求的功能';
+        } else if (statusCode === 502) {
+            errorStr = '服务器从上游服务器收到一个无效的响应';
+        } else if (statusCode === 503) {
+            errorStr = '服务器繁忙';
+        } else if (statusCode === 504) {
+            errorStr = '网关超时';
+        } else if (statusCode === 455) {
+            errorStr = '版本过低';
         }
-      }).then(function(response) {
-        console.log(response.text());
-        alert(response.text());
-      }, function(error) {
-        console.log(error.message);
-        alert(error.message);
-      });
+        return statusCode.toString() + " " + errorStr;
+    };
+
+    function fetchStoreInfoAPI() {
+        var apiUrl = 'http://store.51dinghuo.cc/api/store/info';
+
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'laimi-client-version': 'ios.store.client:2.20.0',
+            },
+            credentials: 'same-origin'
+        })
+        .then(function(response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                var error = new Error(_serverRequestError(response.status));
+                throw error;
+            }
+        })
+        .then(function(responseData) {
+            console.log(JSON.stringify(responseData));
+            alert(JSON.stringify(responseData));
+        })
+        .catch(function(error) {
+            console.log(error.message);
+            alert(error.message);
+        });
     };
 
   </script>
