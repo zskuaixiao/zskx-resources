@@ -13,18 +13,39 @@
       alert(document.cookie);
     };
 
-    function fetchUserFromNative() {
-      // Android
+    function fetchShareWebpageFromNative() {
+      let webpageInfo = '{"title":"我是标题","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com","webpageThumb":"" }'
+       // Android
+      }
       try {
-        var user = window.appInfoDispose.getUser();
-        alert(user);
+        // 在receiveAppCallback中获取调用结果
+        window.appDispose.setShareInfo(`{webpageInfo}`);
         return;
       } catch (e) {
         console.log('Call Android Exception : ' + e.toString());
       }
       // iOS8+
       try {
-        // 在receiveIOSCallback中获取调用结果
+        // 在receiveAppCallback中获取调用结果
+        window.webkit.messageHandlers.getUser.postMessage(`{webpageInfo}`);
+        return;
+      } catch (e) {
+        console.log('Call iOS Exception : ' + e.toString());
+      }
+    };
+
+    function fetchUserFromNative() {
+      // Android
+      try {
+        // 在receiveAppCallback中获取调用结果
+        window.appDispose.getUser();
+        return;
+      } catch (e) {
+        console.log('Call Android Exception : ' + e.toString());
+      }
+      // iOS8+
+      try {
+        // 在receiveAppCallback中获取调用结果
         window.webkit.messageHandlers.getUser.postMessage(null);
         return;
       } catch (e) {
@@ -32,10 +53,13 @@
       }
     };
 
-    function receiveIOSCallback(msgHandler, response) {
+    function receiveAppCallback(platform, msgHandler, response) {
+      console.log('回调平台：'+ platform);
+      console.log(response);
       if (msgHandler == 'getUser') {
-        console.log(response);
         alert('user.name = ' + response.name);
+      } else if (msgHandler == 'setShareInfo') {
+        alert('share resule = ' + response.shareResult);
       }
     };
 
@@ -104,6 +128,9 @@
   <li><a href="fmcgshop://goods/1600488">商品详情 (goodsId=1600488)</a></li>
   <li><a href="fmcgshop://activity/11143">活动商品列表 (activityId=11143)</a></li>
   <li><button onclick="fetchUserFromNative()">call getUser</button></li>
+  <li><button onclick="fetchShareWebpageFromNative()">setWebpageShareInfo</button></li>
+  <li><button onclick="fetchShareTextFromNative()">setTextShareInfo</button></li>
+  <li><button onclick="fetchShareImageFromNative()">setImageShareInfo</button></li>
   <li><button onclick="printCookies()">print cookies</button></li>
   <li><button onclick="fetchStoreInfoAPI()">fetchStoreInfoAPI</button></li>
 </ul>
