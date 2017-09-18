@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Test Web</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Test Web</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <script src="https://raw.githubusercontent.com/github/fetch/master/fetch.js"></script>
+    <script src="https://raw.githubusercontent.com/github/fetch/master/fetch.js"></script>
 
-  <script>
+    <script>
     function printCookies() {
       console.log(document.cookie);
       alert(document.cookie);
     };
 
-    function fetchShareWebpageFromNative() {
-      let webpageInfo = '{"title":"我是标题","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com","webpageThumb":"" }'
+    function fetchShareFromNative(shareInfo) {
        // Android
-      }
       try {
         // 在receiveAppCallback中获取调用结果
-        window.appDispose.setShareInfo(`{webpageInfo}`);
+        window.appDispose.setShareInfo(shareInfo);
         return;
       } catch (e) {
         console.log('Call Android Exception : ' + e.toString());
@@ -27,11 +25,26 @@
       // iOS8+
       try {
         // 在receiveAppCallback中获取调用结果
-        window.webkit.messageHandlers.getUser.postMessage(`{webpageInfo}`);
+        window.webkit.messageHandlers.setShareInfo.postMessage(shareInfo);
         return;
       } catch (e) {
         console.log('Call iOS Exception : ' + e.toString());
       }
+    };
+
+    function fetchShareWebpageFromNative() {
+      let webpageInfo = '{"title":"我是标题","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com","webpageThumb":"http://static.51dinghuo.cc/files/mobile/android/other/zhuanpan.png" }'
+      this.fetchShareFromNative(webpageInfo);
+    };
+
+    function fetchShareTextFromNative() {
+      let textInfo = '{"title":"我是标题哈哈哈哈哈哈哈哈哈哈有毒哈哈哈哈呃"}';
+      this.fetchShareFromNative(textInfo);
+    };
+
+    function fetchShareImageFromNative() {
+      let imageInfo = '{"image": "http://static.51dinghuo.cc/files/mobile/android/other/share_guide2.png"}';
+      this.fetchShareFromNative(imageInfo);
     };
 
     function fetchUserFromNative() {
@@ -123,16 +136,16 @@
 </head>
 <body>
 <ul>
-  <li><a href="https://m.jd.com/">京东H5</a></li>
-  <li><a href="tel:18475555555">拨打电话</a></li>
-  <li><a href="fmcgshop://goods/1600488">商品详情 (goodsId=1600488)</a></li>
-  <li><a href="fmcgshop://activity/11143">活动商品列表 (activityId=11143)</a></li>
-  <li><button onclick="fetchUserFromNative()">call getUser</button></li>
-  <li><button onclick="fetchShareWebpageFromNative()">setWebpageShareInfo</button></li>
-  <li><button onclick="fetchShareTextFromNative()">setTextShareInfo</button></li>
-  <li><button onclick="fetchShareImageFromNative()">setImageShareInfo</button></li>
-  <li><button onclick="printCookies()">print cookies</button></li>
-  <li><button onclick="fetchStoreInfoAPI()">fetchStoreInfoAPI</button></li>
+    <li><a href="https://m.jd.com/">京东H5</a></li>
+    <li><a href="tel:18475555555">拨打电话</a></li>
+    <li><a href="fmcgshop://goods/1600488">商品详情 (goodsId=1600488)</a></li>
+    <li><a href="fmcgshop://activity/11143">活动商品列表 (activityId=11143)</a></li>
+    <li><button onclick="fetchUserFromNative()">call getUser</button></li>
+    <li><button onclick="fetchShareWebpageFromNative()">setWebpageShareInfo</button></li>
+    <li><button onclick="fetchShareTextFromNative()">setTextShareInfo</button></li>
+    <li><button onclick="fetchShareImageFromNative()">setImageShareInfo</button></li>
+    <li><button onclick="printCookies()">print cookies</button></li>
+    <li><button onclick="fetchStoreInfoAPI()">fetchStoreInfoAPI</button></li>
 </ul>
 </body>
 </html>
