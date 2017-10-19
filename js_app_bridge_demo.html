@@ -13,6 +13,36 @@
       alert(document.cookie);
     };
 
+    // 加入购物车
+    function addToCart(goodsInfo){
+      // Android
+      try {
+        window.appDispose.addToCart(goodsInfo);
+        return;
+      } catch (e) {
+        console.log('Call Android Exception : ' + e.toString());
+      }
+      // iOS8+
+      try {
+        window.webkit.messageHandlers.addToCart.postMessage(goodsInfo);
+        return;
+      } catch (e) {
+        console.log('Call iOS Exception : ' + e.toString());
+      }
+    };
+
+    // 添加套装到购物车
+    function addBundleToCart(){
+      let bundleInfo = '{"bundleId":6326230515036721153, "activityId":6326230515019943936}'
+      this.addToCart(bundleInfo);
+    }
+
+    //  添加商品购物车
+    function addGoodsToCart(){
+      let goodsInfo = '{"goodsId":330614780, "isPresell":false}'
+      this.addToCart(goodsInfo);
+    }
+
     function fetchShareFromNative(shareInfo) {
        // Android
       try {
@@ -33,7 +63,7 @@
     };
 
     function fetchShareWebpageFromNative() {
-      let webpageInfo = '{"title":"我是标题","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com","webpageThumb":"http://static.51dinghuo.cc/files/mobile/android/other/zhuanpan.png" }'
+      let webpageInfo = '{"title":"我是标题","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com","webpageThumb":"http://www.wenphoto.com/uploads/article/20150815/caa8967c66ed5d943015fcd222dd7b23.jpg" }'
       this.fetchShareFromNative(webpageInfo);
     };
 
@@ -43,7 +73,7 @@
     };
 
     function fetchShareImageFromNative() {
-      let imageInfo = '{"image": "http://static.51dinghuo.cc/files/mobile/android/other/share_guide2.png"}';
+      let imageInfo = '{"image": "http://www.wenphoto.com/uploads/article/20150815/caa8967c66ed5d943015fcd222dd7b23.jpg"}';
       this.fetchShareFromNative(imageInfo);
     };
 
@@ -146,6 +176,8 @@
     <li><button onclick="fetchShareImageFromNative()">setImageShareInfo</button></li>
     <li><button onclick="printCookies()">print cookies</button></li>
     <li><button onclick="fetchStoreInfoAPI()">fetchStoreInfoAPI</button></li>
+    <li><button onclick="addBundleToCart()">添加套装</button></li>
+    <li><button onclick="addGoodsToCart()">添加商品</button></li>
 </ul>
 </body>
 </html>
