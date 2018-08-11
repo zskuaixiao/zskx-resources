@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Test Web</title>
+    <title>Web-APP API</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -62,8 +62,40 @@
       }
     };
 
-    function fetchShareWebpageFromNative() {
-      let webpageInfo = '{"title":"我是标题","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com","webpageThumb":"http://www.wenphoto.com/uploads/article/20150815/caa8967c66ed5d943015fcd222dd7b23.jpg" }'
+    function fetchShareMiniProgram(shareInfo) {
+     // Android
+      try {
+        window.appDispose.shareMiniProgram(shareInfo);
+        return;
+      } catch (e) {
+        console.log('Call Android Exception : ' + e.toString());
+      }
+      // iOS8+
+      try {
+        window.webkit.messageHandlers.shareMiniProgram.postMessage(shareInfo);
+        return;
+      } catch (e) {
+        console.log('Call iOS Exception : ' + e.toString());
+      }
+    };
+
+    function fetchShareWebpageCustomerImage() {
+      let webpageInfo = '{"title":"我是自定义图","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com","webpageThumb":"http://www.wenphoto.com/uploads/article/20150815/caa8967c66ed5d943015fcd222dd7b23.jpg" }'
+      this.fetchShareFromNative(webpageInfo);
+    };
+
+    function fetchShareWebpageSnapshotImage() {
+      let webpageInfo = '{"title":"我是屏幕截图","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com", "useSnapshotImage": true}'
+      this.fetchShareFromNative(webpageInfo);
+    };
+
+    function fetchShareWebpageSnapshotFull() {
+      let webpageInfo = '{"title":"我是屏幕长图","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com", "useSnapshotImage": true, "isSnapshotFullContent": true}'
+      this.fetchShareFromNative(webpageInfo);
+    };
+
+    function fetchShareWebpageDefault() {
+      let webpageInfo = '{"title":"我是默认图","description":"我是描述","webpageUrl":"https://www.zskuaixiao.com"}'
       this.fetchShareFromNative(webpageInfo);
     };
 
@@ -77,18 +109,48 @@
       this.fetchShareFromNative(imageInfo);
     };
 
+    function fetchShareSnapshotImage() {
+      let imageInfo = '{"useSnapshotImage": true}';
+      this.fetchShareFromNative(imageInfo);
+    };
+
+    function fetchSnapshotFullContent() {
+      let imageInfo = '{"useSnapshotImage": true, "isSnapshotFullContent": true}';
+      this.fetchShareFromNative(imageInfo);
+    };
+
     function fetchShareMiniProgramFromNative() {
-      let program = '{"title": "网页分享", "miniProgramType": "test", "useSnapshotImage": true}'
-    	 // Android
+      let program = '{"title": "小程序-默认图", "miniProgramType": "test"}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramCustomerImage() {
+      let program = '{"title": "小程序-自定义图", "miniProgramType": "test", "image": "http://www.wenphoto.com/uploads/article/20150815/caa8967c66ed5d943015fcd222dd7b23.jpg"}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramSnapshotImage() {
+      let program = '{"title": "小程序-屏幕截图", "miniProgramType": "test", "useSnapshotImage": true}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramSnapshotFull() {
+      let program = '{"title": "小程序-屏幕长图", "miniProgramType": "test", "useSnapshotImage": true, "isSnapshotFullContent": true}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function launchMiniProgram() {
+      let program = '{"path": "pages/mine/my-balance", "miniProgramType": "test"}';
+      // Android
       try {
-        window.appDispose.shareMiniProgram(shareInfo);
+        window.appDispose.launchMiniProgram(program);
         return;
       } catch (e) {
         console.log('Call Android Exception : ' + e.toString());
       }
       // iOS8+
       try {
-        window.webkit.messageHandlers.shareMiniProgram.postMessage(shareInfo);
+        window.webkit.messageHandlers.launchMiniProgram.postMessage(program);
         return;
       } catch (e) {
         console.log('Call iOS Exception : ' + e.toString());
@@ -121,6 +183,8 @@
         alert('user.name = ' + response.name);
       } else if (msgHandler == 'setShareInfo') {
         alert('share resule = ' + response.shareResult);
+      } else if (msgHandler == 'shareMiniProgram'){
+        alert('Mini Program resule = ' + response.shareResult);
       }
     };
 
@@ -182,21 +246,42 @@
   </script>
 
 </head>
+<style type="text/css">
+li {margin: 15px}
+
+</style>
 <body>
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533962645100&di=45b71fd1bc2a454e7727a34c4a61fa18&imgtype=0&src=http%3A%2F%2Fimg15.3lian.com%2F2015%2Ff2%2F45%2Fd%2F77.jpg" border="1" width="400" >
 <ul>
     <li><a href="https://m.jd.com/">京东H5</a></li>
     <li><a href="tel:18475555555">拨打电话</a></li>
     <li><a href="fmcgshop://goods/1600488">商品详情 (goodsId=1600488)</a></li>
     <li><a href="fmcgshop://activity/11143">活动商品列表 (activityId=11143)</a></li>
+    <li><a href="fmcgshop://billDetail/2797">订单详情 (billId=2797)</a></li>
     <li><button onclick="fetchUserFromNative()">call getUser</button></li>
-    <li><button onclick="fetchShareWebpageFromNative()">setWebpageShareInfo</button></li>
-    <li><button onclick="fetchShareTextFromNative()">setTextShareInfo</button></li>
-    <li><button onclick="fetchShareImageFromNative()">setImageShareInfo</button></li>
-    <li><button onclick="fetchShareMiniProgramFromNative()">setImageShareInfo</button></li>
+    <li><button onclick="fetchShareWebpageCustomerImage()">分享连接-自定义图</button></li>
+    <li><button onclick="fetchShareWebpageSnapshotImage()">分享连接-屏幕截图</button></li>
+    <li><button onclick="fetchShareWebpageSnapshotFull()">分享连接-屏幕长图</button></li>
+    <li><button onclick="fetchShareWebpageDefault()">分享连接-默认图</button></li>
+    <li><button onclick="fetchShareTextFromNative()">分享文字</button></li>
+    <li><button onclick="fetchShareImageFromNative()">分享图片-自定义图</button></li>
+    <li><button onclick="fetchShareSnapshotImage()">分享图片-屏幕截图</button></li>
+    <li><button onclick="fetchSnapshotFullContent()">分享图片-屏幕长图</button></li>
+    <li><button onclick="fetchShareMiniProgramFromNative()">分享小程序-默认图</button></li>
+    <li><button onclick="fetchShareMiniProgramCustomerImage()">分享小程序-自定义图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotImage()">分享小程序-屏幕截图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotFull()">分享小程序-屏幕长图</button></li>
+    <li><button onclick="launchMiniProgram()">打开小程序</button></li>
     <li><button onclick="printCookies()">print cookies</button></li>
     <li><button onclick="fetchStoreInfoAPI()">fetchStoreInfoAPI</button></li>
     <li><button onclick="addBundleToCart()">添加套装</button></li>
     <li><button onclick="addGoodsToCart()">添加商品</button></li>
 </ul>
+
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963043027&di=50d8dc1404eae8b5075ea189a58470ba&imgtype=0&src=http%3A%2F%2Feasyread.ph.126.net%2FVEbgVf7FNfBi3Ot9KCIAPA%3D%3D%2F7916714617432377848.jpg" border="1" width="400">
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963111228&di=dca21c972cdc711167529dccda3df86b&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Ftranslate%2F93%2Fw580h313%2F20180423%2F4tVN-fznefki0285861.jpg" border="1" width="400">
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963043027&di=50d8dc1404eae8b5075ea189a58470ba&imgtype=0&src=http%3A%2F%2Feasyread.ph.126.net%2FVEbgVf7FNfBi3Ot9KCIAPA%3D%3D%2F7916714617432377848.jpg" border="1" width="400">
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963111228&di=dca21c972cdc711167529dccda3df86b&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Ftranslate%2F93%2Fw580h313%2F20180423%2F4tVN-fznefki0285861.jpg" border="1" width="400">
+
 </body>
 </html>
