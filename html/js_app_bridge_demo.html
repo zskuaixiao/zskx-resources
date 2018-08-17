@@ -139,8 +139,85 @@
       this.fetchShareMiniProgram(program);
     };
 
-    function launchMiniProgram() {
-      let program = '{"path": "pages/mine/my-balance", "miniProgramType": "test"}';
+    function fetchShareMiniProgramFromNativePreview() {
+      let program = '{"title": "小程序-默认图", "miniProgramType": "preview"}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramCustomerImagePreview() {
+      let program = '{"title": "小程序-自定义图", "miniProgramType": "preview", "image": "http://www.wenphoto.com/uploads/article/20150815/caa8967c66ed5d943015fcd222dd7b23.jpg"}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramSnapshotImagePreview() {
+      let program = '{"title": "小程序-屏幕截图", "miniProgramType": "preview", "useSnapshotImage": true}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramSnapshotFullPreview() {
+      let program = '{"title": "小程序-屏幕长图", "miniProgramType": "preview", "useSnapshotImage": true, "isSnapshotFullContent": true}'
+      this.fetchShareMiniProgram(program);
+    };
+
+
+    function fetchShareMiniProgramFromNativeRelease() {
+      let program = '{"title": "小程序-默认图", "miniProgramType": "release"}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramCustomerImageRelease() {
+      let program = '{"title": "小程序-自定义图", "miniProgramType": "release", "image": "http://www.wenphoto.com/uploads/article/20150815/caa8967c66ed5d943015fcd222dd7b23.jpg"}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramSnapshotImageRelease() {
+      let program = '{"title": "小程序-屏幕截图", "miniProgramType": "release", "useSnapshotImage": true}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function fetchShareMiniProgramSnapshotFullRelease() {
+      let program = '{"title": "小程序-屏幕长图", "miniProgramType": "release", "useSnapshotImage": true, "isSnapshotFullContent": true}'
+      this.fetchShareMiniProgram(program);
+    };
+
+    function launchMiniProgramTest() {
+      let program = '{"path": "pages/reward/reward", "miniProgramType": "test"}';
+      // Android
+      try {
+        window.appDispose.launchMiniProgram(program);
+        return;
+      } catch (e) {
+        console.log('Call Android Exception : ' + e.toString());
+      }
+      // iOS8+
+      try {
+        window.webkit.messageHandlers.launchMiniProgram.postMessage(program);
+        return;
+      } catch (e) {
+        console.log('Call iOS Exception : ' + e.toString());
+      }
+    };
+
+    function launchMiniProgramPreview() {
+      let program = '{"path": "pages/reward/reward", "miniProgramType": "preview"}';
+      // Android
+      try {
+        window.appDispose.launchMiniProgram(program);
+        return;
+      } catch (e) {
+        console.log('Call Android Exception : ' + e.toString());
+      }
+      // iOS8+
+      try {
+        window.webkit.messageHandlers.launchMiniProgram.postMessage(program);
+        return;
+      } catch (e) {
+        console.log('Call iOS Exception : ' + e.toString());
+      }
+    };
+
+    function launchMiniProgramRelease() {
+      let program = '{"path": "pages/reward/reward", "miniProgramType": "release"}';
       // Android
       try {
         window.appDispose.launchMiniProgram(program);
@@ -267,11 +344,25 @@ li {margin: 15px}
     <li><button onclick="fetchShareImageFromNative()">分享图片-自定义图</button></li>
     <li><button onclick="fetchShareSnapshotImage()">分享图片-屏幕截图</button></li>
     <li><button onclick="fetchSnapshotFullContent()">分享图片-屏幕长图</button></li>
-    <li><button onclick="fetchShareMiniProgramFromNative()">分享小程序-默认图</button></li>
-    <li><button onclick="fetchShareMiniProgramCustomerImage()">分享小程序-自定义图</button></li>
-    <li><button onclick="fetchShareMiniProgramSnapshotImage()">分享小程序-屏幕截图</button></li>
-    <li><button onclick="fetchShareMiniProgramSnapshotFull()">分享小程序-屏幕长图</button></li>
-    <li><button onclick="launchMiniProgram()">打开小程序</button></li>
+
+    <li><button onclick="fetchShareMiniProgramFromNative()">分享测试版小程序-默认图</button></li>
+    <li><button onclick="fetchShareMiniProgramCustomerImage()">分享测试版小程序-自定义图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotImage()">分享测试版小程序-屏幕截图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotFull()">分享测试版小程序-屏幕长图</button></li>
+
+    <li><button onclick="fetchShareMiniProgramFromNativePreview()">分享体验版小程序-默认图</button></li>
+    <li><button onclick="fetchShareMiniProgramCustomerImagePreview()">分享体验版小程序-自定义图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotImagePreview()">分享体验版小程序-屏幕截图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotFullPreview()">分享体验版小程序-屏幕长图</button></li>
+
+       <li><button onclick="fetchShareMiniProgramFromNativeRelease()">分享正式版小程序-默认图</button></li>
+    <li><button onclick="fetchShareMiniProgramCustomerImageRelease()">分享正式版小程序-自定义图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotImageRelease()">分享正式版小程序-屏幕截图</button></li>
+    <li><button onclick="fetchShareMiniProgramSnapshotFullRelease()">分享正式版小程序-屏幕长图</button></li>
+
+    <li><button onclick="launchMiniProgramTest()">打开测试版小程序</button></li>
+    <li><button onclick="launchMiniProgramPreview()">打开体验版小程序</button></li>
+    <li><button onclick="launchMiniProgramRelease()">打开正式版小程序</button></li>
     <li><button onclick="printCookies()">print cookies</button></li>
     <li><button onclick="fetchStoreInfoAPI()">fetchStoreInfoAPI</button></li>
     <li><button onclick="addBundleToCart()">添加套装</button></li>
@@ -280,8 +371,7 @@ li {margin: 15px}
 
 <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963043027&di=50d8dc1404eae8b5075ea189a58470ba&imgtype=0&src=http%3A%2F%2Feasyread.ph.126.net%2FVEbgVf7FNfBi3Ot9KCIAPA%3D%3D%2F7916714617432377848.jpg" border="1" width="400">
 <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963111228&di=dca21c972cdc711167529dccda3df86b&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Ftranslate%2F93%2Fw580h313%2F20180423%2F4tVN-fznefki0285861.jpg" border="1" width="400">
-<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963043027&di=50d8dc1404eae8b5075ea189a58470ba&imgtype=0&src=http%3A%2F%2Feasyread.ph.126.net%2FVEbgVf7FNfBi3Ot9KCIAPA%3D%3D%2F7916714617432377848.jpg" border="1" width="400">
-<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533963111228&di=dca21c972cdc711167529dccda3df86b&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Ftranslate%2F93%2Fw580h313%2F20180423%2F4tVN-fznefki0285861.jpg" border="1" width="400">
+
 
 </body>
 </html>
